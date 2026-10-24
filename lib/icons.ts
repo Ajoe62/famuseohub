@@ -1,0 +1,23 @@
+// Per-icon imports so only the icons used here end up in the build.
+export { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons/faArrowUpRightFromSquare";
+export { faAward } from "@fortawesome/free-solid-svg-icons/faAward";
+export { faBook } from "@fortawesome/free-solid-svg-icons/faBook";
+export { faBullhorn } from "@fortawesome/free-solid-svg-icons/faBullhorn";
+export { faCalendarDays } from "@fortawesome/free-solid-svg-icons/faCalendarDays";
+export { faCircleUser } from "@fortawesome/free-solid-svg-icons/faCircleUser";
+export { faCirclePlus } from "@fortawesome/free-solid-svg-icons/faCirclePlus";
+export { faCircleQuestion } from "@fortawesome/free-solid-svg-icons/faCircleQuestion";
+export { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
+export { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons/faClockRotateLeft";
+export { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons/faCloudArrowUp";
+export { faDiagramProject } from "@fortawesome/free-solid-svg-icons/faDiagramProject";
+export { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons/faEllipsisVertical";
+export { faFileLines } from "@fortawesome/free-solid-svg-icons/faFileLines";
+export { faFileSignature } from "@fortawesome/free-solid-svg-icons/faFileSignature";
+export { faFileWord } from "@fortawesome/free-solid-svg-icons/faFileWord";
+export { faFlask } from "@fortawesome/free-solid-svg-icons/faFlask";
+export { faFolder } from "@fortawesome/free-solid-svg-icons/faFolder";
+export { faGaugeHigh } from "@fortawesome/free-solid-svg-icons/faGaugeHigh";
+export { faInbox } from "@fortawesome/free-solid-svg-icons/faInbox";
+export { faStopwatch } from "@fortawesome/free-solid-svg-icons/faStopwatch";
+export { faUsers } from "@fortawesome/free-solid-svg-icons/faUsers";

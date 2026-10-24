@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAMU-SOE Capstone and Lab Hub | Canvas LMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canvas: {
+              sidebar: '#12362B',
+              active: '#1B4D3E',
+              orange: '#F26A36',
+              bg: '#F5F5F5',
+              cardbg: '#FFFFFF',
+              border: '#E1E6E8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-canvas-bg font-sans text-slate-800 antialiased min-h-screen flex">
+
+  <!-- CANVAS GLOBAL NAVIGATION -->
+  <aside class="w-20 bg-canvas-sidebar text-white flex flex-col items-center py-4 space-y-6 flex-shrink-0 min-h-screen z-50">
+    <div class="w-10 h-10 rounded-full bg-canvas-orange text-white flex items-center justify-center font-black text-xs tracking-wider shadow-md">
+      FAMU
+    </div>
+
+    <nav class="flex flex-col space-y-5 w-full items-center text-[11px] font-semibold">
+      <a href="#" class="flex flex-col items-center text-slate-300 hover:text-white transition-colors">
+        <i class="fa-solid fa-circle-user text-xl mb-1"></i>
+        <span>Account</span>
+      </a>
+      <a href="#" onclick="showCanvasHome()" class="flex flex-col items-center text-white bg-canvas-active w-full py-2 border-l-4 border-canvas-orange">
+        <i class="fa-solid fa-gauge-high text-xl mb-1"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-slate-300 hover:text-white transition-colors">
+        <i class="fa-solid fa-book text-xl mb-1"></i>
+        <span>Courses</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-slate-300 hover:text-white transition-colors">
+        <i class="fa-solid fa-users text-xl mb-1"></i>
+        <span>Groups</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-slate-300 hover:text-white transition-colors">
+        <i class="fa-solid fa-calendar-days text-xl mb-1"></i>
+        <span>Calendar</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-slate-300 hover:text-white transition-colors relative">
+        <i class="fa-solid fa-inbox text-xl mb-1"></i>
+        <span class="absolute top-0 right-3 bg-canvas-orange text-white text-[9px] px-1 rounded-full font-bold">2</span>
+        <span>Inbox</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-slate-300 hover:text-white transition-colors">
+        <i class="fa-solid fa-clock-rotate-left text-xl mb-1"></i>
+        <span>History</span>
+      </a>
+      <a href="#" class="flex flex-col items-center text-slate-300 hover:text-white transition-colors">
+        <i class="fa-solid fa-circle-question text-xl mb-1"></i>
+        <span>Help</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CANVAS CONTENT AREA -->
+  <div class="flex-grow flex flex-col lg:flex-row overflow-x-hidden">
+
+    <main class="flex-grow p-6 lg:p-8 space-y-6">
+
+      <!-- TOP CANVAS HEADER -->
+      <header class="flex justify-between items-center border-b border-canvas-border pb-4">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900" id="page-title">Dashboard</h1>
+          <p class="text-xs text-slate-500">Florida Agricultural and Mechanical University • famu.instructure.com</p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button id="role-toggle-btn" onclick="switchRole()" class="px-3 py-1.5 bg-canvas-sidebar text-white text-xs font-bold rounded-lg hover:bg-canvas-active transition-colors shadow-sm">
+            Switch to Advisor View
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW 1: CANVAS DASHBOARD GRID -->
+      <div id="canvas-dashboard-grid" class="space-y-6">
+        <h2 class="text-sm font-bold uppercase text-slate-400 tracking-wider">Published Courses</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+
+          <!-- COURSE CARD 1: FAMU-SOE CAPSTONE HUB -->
+          <div onclick="openCapstoneCourse()" class="bg-white rounded-xl shadow-sm border border-canvas-border overflow-hidden cursor-pointer hover:shadow-md transition-shadow group">
+            <div class="h-32 bg-canvas-sidebar p-4 relative flex items-end">
+              <div class="absolute top-3 right-3 text-white/80 hover:text-white">
+                <i class="fa-solid fa-ellipsis-vertical text-lg"></i>
+              </div>
+              <span class="bg-canvas-orange text-white text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider">SOE Requirement</span>
+            </div>
+            <div class="p-4 space-y-2">
+              <h3 class="font-bold text-slate-900 text-sm group-hover:text-canvas-orange transition-colors">
+                FAMU-SOE Capstone and Lab Hub
+              </h3>
+              <p class="text-xs text-slate-500">Flagship • Capstone Track • 50-Hour Lab Requirement</p>
+              <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-slate-400 text-xs">
+                <i class="fa-solid fa-award text-canvas-orange hover:text-slate-600" title="Flagship Track"></i>
+                <i class="fa-solid fa-diagram-project hover:text-slate-600" title="Project Capstone"></i>
+                <i class="fa-solid fa-stopwatch text-canvas-sidebar hover:text-slate-600" title="50 Lab Hours"></i>
+                <i class="fa-solid fa-folder hover:text-slate-600"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- COURSE CARD 2: ENV POL & RISK MGNT -->
+          <div class="bg-white rounded-xl shadow-sm border border-canvas-border overflow-hidden opacity-90">
+            <div class="h-32 bg-red-700 p-4 relative">
+              <div class="absolute top-3 right-3 text-white/80"><i class="fa-solid fa-ellipsis-vertical text-lg"></i></div>
+            </div>
+            <div class="p-4 space-y-2">
+              <h3 class="font-bold text-slate-900 text-sm">ENV POL & RISK MGNT</h3>
+              <p class="text-xs text-slate-500">EVR1643_001_2233 • Spring 2026</p>
+              <div class="pt-3 border-t border-slate-100 flex space-x-4 text-slate-400 text-xs">
+                <i class="fa-solid fa-bullhorn"></i><i class="fa-solid fa-file-lines"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- COURSE CARD 3: Environmental Science Research -->
+          <div class="bg-white rounded-xl shadow-sm border border-canvas-border overflow-hidden opacity-90">
+            <div class="h-32 bg-emerald-700 p-4 relative">
+              <div class="absolute top-3 right-3 text-white/80"><i class="fa-solid fa-ellipsis-vertical text-lg"></i></div>
+            </div>
+            <div class="p-4 space-y-2">
+              <h3 class="font-bold text-slate-900 text-sm">Environmental Science Research</h3>
+              <p class="text-xs text-slate-500">EVR-4900 • Spring 2026</p>
+              <div class="pt-3 border-t border-slate-100 flex space-x-4 text-slate-400 text-xs">
+                <i class="fa-solid fa-bullhorn"></i><i class="fa-solid fa-file-lines"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- VIEW 2: FAMU-SOE CAPSTONE HUB INSIDE CANVAS -->
+      <div id="canvas-capstone-app" class="space-y-6 hidden">
+        
+        <nav class="text-xs text-slate-500 flex items-center space-x-2">
+          <a href="#" onclick="showCanvasHome()" class="hover:underline text-canvas-sidebar font-semibold">Dashboard</a>
+          <span>/</span>
+          <span class="font-bold text-slate-800">FAMU-SOE Capstone and Lab Hub</span>
+        </nav>
+
+        <!-- 50-HOUR LAB LOGGING SUMMARY BANNER -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-canvas-border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-full bg-canvas-sidebar text-white flex items-center justify-center font-bold text-lg">
+              <i class="fa-solid fa-stopwatch text-canvas-orange"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-sm">50-Hour Laboratory & Field Log Progress</h3>
+              <p class="text-xs text-slate-500">Required hands-on lab work for School of the Environment capstone verification.</p>
+            </div>
+          </div>
+          <div class="w-full md:w-64 space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span class="text-slate-700">Logged: <span id="logged-hours-text">32.5</span> / 50 hrs</span>
+              <span class="text-canvas-orange">65%</span>
+            </div>
+            <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden border border-slate-200">
+              <div id="hours-progress-bar" class="bg-canvas-orange h-full rounded-full transition-all" style="width: 65%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curriculum Document Links Banner -->
+        <div class="bg-canvas-sidebar text-white rounded-xl p-4 shadow-sm border border-emerald-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex items-center space-x-3">
+            <div class="bg-canvas-orange p-2.5 rounded-lg text-white">
+              <i class="fa-solid fa-file-word text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-sm">Official Curriculum & Topic Reference Guides</h3>
+              <p class="text-xs text-emerald-200">Review guidelines before submitting your milestone proposals.</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <a href="https://docs.google.com/document/d/1oQWtigu2P0On8FMq8sUaVljGpr5_RyK9aPVHN1B8GUg/edit?usp=drive_web" target="_blank" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 border border-emerald-700">
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> DOE Capstone Guidelines
+            </a>
+            <a href="https://docs.google.com/document/d/1Glk5x4CVzu_qN26XY0mHiz45NcVsy1994P23M-UscOI/edit?usp=drive_web" target="_blank" class="px-3 py-1.5 bg-canvas-orange hover:bg-orange-600 text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-flask text-[10px]"></i> Flagship Bioremediation Guide
+            </a>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs (Tracks + 50-Hour Lab Tracker) -->
+        <div class="flex flex-wrap gap-2 border-b border-canvas-border pb-2">
+          <button id="btn-track-flagship" onclick="switchMainTab('flagship')" class="px-4 py-2 font-bold text-xs rounded-lg bg-canvas-sidebar text-white shadow-sm">
+            <i class="fa-solid fa-award mr-1.5"></i> Flagship Capstone Track
+          </button>
+          <button id="btn-track-project" onclick="switchMainTab('project')" class="px-4 py-2 font-bold text-xs rounded-lg bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border">
+            <i class="fa-solid fa-diagram-project mr-1.5"></i> Project Capstone Track
+          </button>
+          <button id="btn-track-hours" onclick="switchMainTab('hours')" class="px-4 py-2 font-bold text-xs rounded-lg bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border">
+            <i class="fa-solid fa-clock mr-1.5"></i> Log Lab Hours (50 Hrs Required)
+          </button>
+        </div>
+
+        <!-- STUDENT CONTAINER -->
+        <div id="student-milestone-container" class="space-y-6">
+
+          <!-- FLAGSHIP CAPSTONE TAB -->
+          <div id="flagship-milestone-panel" class="space-y-6">
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-canvas-border">
+              <h3 class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-4">Flagship Capstone Milestone Progression</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-center">
+                <div class="p-3 rounded-lg border bg-emerald-50 border-emerald-300">
+                  <span class="w-6 h-6 rounded-full bg-canvas-sidebar text-white text-xs font-bold inline-flex items-center justify-center mb-1">1</span>
+                  <p class="text-xs font-bold text-canvas-sidebar">Topic Selection</p>
+                  <p class="text-[10px] text-emerald-700 font-semibold">Completed</p>
+                </div>
+                <div class="p-3 rounded-lg border bg-amber-50 border-amber-300">
+                  <span class="w-6 h-6 rounded-full bg-amber-500 text-white text-xs font-bold inline-flex items-center justify-center mb-1">2</span>
+                  <p class="text-xs font-bold text-amber-900">Research Proposal</p>
+                  <p class="text-[10px] text-amber-700 font-bold">Submitted (Under Review)</p>
+                </div>
+                <div class="p-3 rounded-lg border bg-slate-50 border-slate-200 opacity-60">
+                  <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-600 text-xs font-bold inline-flex items-center justify-center mb-1">3</span>
+                  <p class="text-xs font-bold text-slate-700">Completed Project</p>
+                  <p class="text-[10px] text-slate-400">Locked (Awaiting Stage 2)</p>
+                </div>
+                <div class="p-3 rounded-lg border bg-slate-50 border-slate-200 opacity-60">
+                  <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-600 text-xs font-bold inline-flex items-center justify-center mb-1">4</span>
+                  <p class="text-xs font-bold text-slate-700">Presentation Deck</p>
+                  <p class="text-[10px] text-slate-400">Locked</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                  <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-file-signature text-canvas-orange"></i> Stage 2: Flagship Research Proposal
+                  </h3>
+                  <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Proposal Submitted</span>
+                </div>
+                <form onsubmit="handleMilestoneSubmit(event, 'Flagship Proposal')" class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Flagship Research Theme</label>
+                    <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar">
+                      <option>Project 1: Microbes & Toxic Metal Survival</option>
+                      <option>Project 2: AI Prediction of Metal Removal Efficiency</option>
+                      <option>Project 3: Smart Water Quality Monitoring System</option>
+                      <option>Project 4: Drone Remote Sensing & Metal Detection</option>
+                      <option>Project 5: Environmental Digital Twin Development</option>
+                      <option>Project 6: Citizen Science Toxic Metal Mapping</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Problem Statement</label>
+                    <textarea rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar" placeholder="Describe the environmental problem..."></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Expected Deliverable Type</label>
+                    <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar">
+                      <option>AI Model & Prediction System</option>
+                      <option>Smart Environmental Dashboard</option>
+                      <option>Research Poster & Laboratory Report</option>
+                      <option>Mobile Monitoring App Prototype</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Methodology</label>
+                    <textarea rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar" placeholder="Outline steps and software..."></textarea>
+                  </div>
+                  <button type="submit" class="w-full bg-canvas-orange hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-xs transition-colors shadow-sm">
+                    Submit Proposal to Advisor
+                  </button>
+                </form>
+              </div>
+
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                  <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-canvas-sidebar"></i> Stage 3 & 4: Completed Project & Deck
+                  </h3>
+                  <span class="text-[10px] bg-slate-100 text-slate-500 font-bold px-2 py-0.5 rounded">Final Milestone</span>
+                </div>
+                <form onsubmit="handleMilestoneSubmit(event, 'Flagship Final Deliverables')" class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Completed Report Document (PDF Link / Drive URL)</label>
+                    <input type="url" required placeholder="https://drive.google.com/file/d/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Presentation Slides Link</label>
+                    <input type="url" required placeholder="https://docs.google.com/presentation/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Project Artifact / Code Repository URL</label>
+                    <input type="url" placeholder="https://github.com/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Executive Summary</label>
+                    <textarea rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-canvas-sidebar" placeholder="Summarize findings..."></textarea>
+                  </div>
+                  <button type="submit" class="w-full bg-canvas-sidebar hover:bg-canvas-active text-white font-bold py-2 rounded-lg text-xs transition-colors shadow-sm">
+                    Submit Final Milestone Package
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- PROJECT CAPSTONE TAB -->
+          <div id="project-milestone-panel" class="space-y-6 hidden">
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-canvas-border">
+              <h3 class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-4">Project Capstone Milestone Progression</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-center">
+                <div class="p-3 rounded-lg border bg-slate-50 border-slate-200">
+                  <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-600 text-xs font-bold inline-flex items-center justify-center mb-1">1</span>
+                  <p class="text-xs font-bold text-slate-700">Topic Selection</p>
+                  <p class="text-[10px] text-slate-400">Not Started</p>
+                </div>
+                <div class="p-3 rounded-lg border bg-slate-50 border-slate-200 opacity-60">
+                  <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-600 text-xs font-bold inline-flex items-center justify-center mb-1">2</span>
+                  <p class="text-xs font-bold text-slate-700">Research Proposal</p>
+                  <p class="text-[10px] text-slate-400">Locked</p>
+                </div>
+                <div class="p-3 rounded-lg border bg-slate-50 border-slate-200 opacity-60">
+                  <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-600 text-xs font-bold inline-flex items-center justify-center mb-1">3</span>
+                  <p class="text-xs font-bold text-slate-700">Completed Project</p>
+                  <p class="text-[10px] text-slate-400">Locked</p>
+                </div>
+                <div class="p-3 rounded-lg border bg-slate-50 border-slate-200 opacity-60">
+                  <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-600 text-xs font-bold inline-flex items-center justify-center mb-1">4</span>
+                  <p class="text-xs font-bold text-slate-700">Presentation Deck</p>
+                  <p class="text-[10px] text-slate-400">Locked</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
+                <h3 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-2 flex items-center gap-2">
+                  <i class="fa-solid fa-diagram-project text-canvas-orange"></i> Stage 2: Project Proposal Submission
+                </h3>
+                <form onsubmit="handleMilestoneSubmit(event, 'Project Proposal')" class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">DOE Environmental Management Theme</label>
+                    <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs">
+                      <option>A. Nuclear Waste Treatment & Disposal</option>
+                      <option>B. Groundwater & Soil Remediation</option>
+                      <option>C. Deactivation & Decommissioning (D&D)</option>
+                      <option>D. Long-Term Stewardship & Monitoring</option>
+                      <option>E. Environmental Data Science & Decision Support</option>
+                      <option>F. Radiological Science & Health Physics</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Problem Statement</label>
+                    <textarea rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs" placeholder="Describe the problem..."></textarea>
+                  </div>
+                  <button type="submit" class="w-full bg-canvas-orange hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-xs">Submit Proposal</button>
+                </form>
+              </div>
+
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
+                <h3 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-2 flex items-center gap-2">
+                  <i class="fa-solid fa-cloud-arrow-up text-canvas-sidebar"></i> Stage 3 & 4: Project Deliverables
+                </h3>
+                <form onsubmit="handleMilestoneSubmit(event, 'Project Final Deliverables')" class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Completed Report (10+ Pages, PDF Link)</label>
+                    <input type="url" required placeholder="https://drive.google.com/file/d/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Presentation Slides Link</label>
+                    <input type="url" required placeholder="https://docs.google.com/presentation/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs">
+                  </div>
+                  <button type="submit" class="w-full bg-canvas-sidebar hover:bg-canvas-active text-white font-bold py-2 rounded-lg text-xs">Submit Final Package</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- 50-HOUR LAB HOURS TRACKER TAB -->
+          <div id="hours-milestone-panel" class="space-y-6 hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
+              <!-- Log Hours Form -->
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4 lg:col-span-1">
+                <h3 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-2 flex items-center gap-2">
+                  <i class="fa-solid fa-plus-circle text-canvas-orange"></i> Log New Lab Activity
+                </h3>
+                <form onsubmit="addLabHours(event)" class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Date</label>
+                    <input type="date" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Hours Spent</label>
+                    <input type="number" step="0.5" min="0.5" max="10" required placeholder="e.g. 3.5" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Location / Lab Room</label>
+                    <input type="text" placeholder="e.g. SOE Room 204 / Field Site B" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Activity Description</label>
+                    <textarea rows="2" required placeholder="Describe experiments, sample prep, or field work..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs"></textarea>
+                  </div>
+                  <button type="submit" class="w-full bg-canvas-sidebar hover:bg-canvas-active text-white font-bold py-2 rounded-lg text-xs transition-colors">
+                    Log Hours for Approval
+                  </button>
+                </form>
+              </div>
+
+              <!-- Logged Hours History Table -->
+              <div class="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4 lg:col-span-2">
+                <h3 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-2 flex items-center justify-between">
+                  <span>Logged Hours History</span>
+                  <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-600 font-bold">Requirement: 50 Hours</span>
+                </h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 text-slate-500 uppercase font-bold border-b border-canvas-border">
+                      <tr>
+                        <th class="p-2.5">Date</th>
+                        <th class="p-2.5">Location</th>
+                        <th class="p-2.5">Activity</th>
+                        <th class="p-2.5">Hours</th>
+                        <th class="p-2.5 text-right">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 font-medium">
+                      <tr>
+                        <td class="p-2.5">Oct 14, 2026</td>
+                        <td class="p-2.5">SOE Lab 102</td>
+                        <td class="p-2.5">Microbial toxicity exposure test</td>
+                        <td class="p-2.5 font-bold text-slate-900">4.5 hrs</td>
+                        <td class="p-2.5 text-right"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">Approved</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2.5">Oct 17, 2026</td>
+                        <td class="p-2.5">Pond Field Site A</td>
+                        <td class="p-2.5">Water sampling & IoT sensor calibration</td>
+                        <td class="p-2.5 font-bold text-slate-900">3.0 hrs</td>
+                        <td class="p-2.5 text-right"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">Pending Review</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ADVISOR CONSOLE -->
+        <div id="advisor-milestone-container" class="space-y-6 hidden">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm">Faculty Advisor Approval Queue</h3>
+                <p class="text-xs text-slate-500">Review student proposals, reports, and verify 50-hour lab logs</p>
+              </div>
+              <span class="text-xs bg-canvas-sidebar text-white font-bold px-2.5 py-1 rounded-lg">2 Pending Actions</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-500 uppercase font-bold border-b border-canvas-border">
+                  <tr>
+                    <th class="p-3">Student</th>
+                    <th class="p-3">Type</th>
+                    <th class="p-3">Details</th>
+                    <th class="p-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-medium">
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900">Rabi Elabor (#ST-88421)</td>
+                    <td class="p-3"><span class="bg-canvas-sidebar text-white px-2 py-0.5 rounded font-bold">Proposal</span></td>
+                    <td class="p-3 text-slate-700">Project 1: Microbes & Toxic Metal Survival</td>
+                    <td class="p-3 text-right space-x-2">
+                      <button onclick="approveMilestone()" class="bg-canvas-sidebar text-white px-2.5 py-1 rounded font-bold hover:bg-canvas-active transition-colors">Approve Proposal</button>
+                      <button onclick="requestRevision()" class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded font-bold hover:bg-slate-200 transition-colors">Request Revision</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900">Rabi Elabor (#ST-88421)</td>
+                    <td class="p-3"><span class="bg-canvas-orange text-white px-2 py-0.5 rounded font-bold">Lab Log</span></td>
+                    <td class="p-3 text-slate-700">3.0 Hours • Pond Field Site A (Sensor Calibration)</td>
+                    <td class="p-3 text-right space-x-2">
+                      <button onclick="alert('Lab Hours Approved!')" class="bg-canvas-sidebar text-white px-2.5 py-1 rounded font-bold hover:bg-canvas-active transition-colors">Approve Hours</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- CANVAS RIGHT SIDEBAR -->
+    <aside class="w-full lg:w-64 p-6 border-t lg:border-t-0 lg:border-l border-canvas-border space-y-6 flex-shrink-0 bg-white">
+      <div class="space-y-2 border-b border-canvas-border pb-3">
+        <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Lab Requirements</h3>
+        <p class="text-xs text-slate-600">Total Required: <strong>50 Hours</strong></p>
+        <p class="text-xs text-slate-600">Current Status: <strong class="text-canvas-orange">32.5 Approved / Pending</strong></p>
+      </div>
+
+      <div class="space-y-2 border-b border-canvas-border pb-3">
+        <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Coming Up</h3>
+        <p class="text-xs text-slate-600 font-semibold">Capstone Deliverable Deadline:</p>
+        <p class="text-xs text-slate-500">April 30, 2026</p>
+      </div>
+
+      <button onclick="openCapstoneCourse()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 px-3 rounded-lg text-center block">
+        View Capstone Hub
+      </button>
+    </aside>
+
+  </div>
+
+  <script>
+    let isAdvisorView = false;
+
+    function openCapstoneCourse() {
+      document.getElementById('canvas-dashboard-grid').classList.add('hidden');
+      document.getElementById('canvas-capstone-app').classList.remove('hidden');
+      document.getElementById('page-title').textContent = "FAMU-SOE Capstone and Lab Hub";
+    }
+
+    function showCanvasHome() {
+      document.getElementById('canvas-capstone-app').classList.add('hidden');
+      document.getElementById('canvas-dashboard-grid').classList.remove('hidden');
+      document.getElementById('page-title').textContent = "Dashboard";
+    }
+
+    function switchMainTab(tab) {
+      const flagship = document.getElementById('flagship-milestone-panel');
+      const project = document.getElementById('project-milestone-panel');
+      const hours = document.getElementById('hours-milestone-panel');
+
+      const btnFlag = document.getElementById('btn-track-flagship');
+      const btnProj = document.getElementById('btn-track-project');
+      const btnHours = document.getElementById('btn-track-hours');
+
+      flagship.classList.add('hidden');
+      project.classList.add('hidden');
+      hours.classList.add('hidden');
+
+      btnFlag.className = "px-4 py-2 font-bold text-xs rounded-lg bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border";
+      btnProj.className = "px-4 py-2 font-bold text-xs rounded-lg bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border";
+      btnHours.className = "px-4 py-2 font-bold text-xs rounded-lg bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border";
+
+      if (tab === 'flagship') {
+        flagship.classList.remove('hidden');
+        btnFlag.className = "px-4 py-2 font-bold text-xs rounded-lg bg-canvas-sidebar text-white shadow-sm";
+      } else if (tab === 'project') {
+        project.classList.remove('hidden');
+        btnProj.className = "px-4 py-2 font-bold text-xs rounded-lg bg-canvas-sidebar text-white shadow-sm";
+      } else if (tab === 'hours') {
+        hours.classList.remove('hidden');
+        btnHours.className = "px-4 py-2 font-bold text-xs rounded-lg bg-canvas-sidebar text-white shadow-sm";
+      }
+    }
+
+    function switchRole() {
+      isAdvisorView = !isAdvisorView;
+      const roleBtn = document.getElementById('role-toggle-btn');
+      const studentContainer = document.getElementById('student-milestone-container');
+      const advisorContainer = document.getElementById('advisor-milestone-container');
+
+      if (isAdvisorView) {
+        roleBtn.textContent = "Switch to Student View";
+        studentContainer.classList.add('hidden');
+        advisorContainer.classList.remove('hidden');
+      } else {
+        roleBtn.textContent = "Switch to Advisor View";
+        advisorContainer.classList.add('hidden');
+        studentContainer.classList.remove('hidden');
+      }
+    }
+
+    function handleMilestoneSubmit(e, title) {
+      e.preventDefault();
+      alert(`Submitted ${title} for advisor review!`);
+    }
+
+    function addLabHours(e) {
+      e.preventDefault();
+      alert("Lab hours logged successfully! Sent to faculty advisor for verification.");
+    }
+
+    function approveMilestone() {
+      alert("Proposal approved! Student unlocked Stage 3.");
+    }
+
+    function requestRevision() {
+      alert("Revision request sent to student.");
+    }
+  </script>
+</body>
+</html>
