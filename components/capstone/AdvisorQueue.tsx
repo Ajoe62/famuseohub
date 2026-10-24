@@ -1,4 +1,5 @@
 import { AlertButton } from "./AlertForm";
+import { stackedCell, stackedHead, stackedRow } from "./stackedTable";
 
 const approveButtonClass =
   "bg-canvas-sidebar text-white px-2.5 py-1 rounded font-bold hover:bg-canvas-active transition-colors";
@@ -7,17 +8,17 @@ export default function AdvisorQueue() {
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
-        <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+        <div className="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-3">
           <div>
             <h3 className="font-bold text-slate-900 text-sm">Faculty Advisor Approval Queue</h3>
             <p className="text-xs text-slate-500">Review student proposals, reports, and verify 50-hour lab logs</p>
           </div>
-          <span className="text-xs bg-canvas-sidebar text-white font-bold px-2.5 py-1 rounded-lg">2 Pending Actions</span>
+          <span className="text-xs bg-canvas-sidebar text-white font-bold px-2.5 py-1 rounded-lg whitespace-nowrap">2 Pending Actions</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase font-bold border-b border-canvas-border">
+            <thead className={`${stackedHead} bg-slate-50 text-slate-500 uppercase font-bold border-b border-canvas-border`}>
               <tr>
                 <th className="p-3">Student</th>
                 <th className="p-3">Type</th>
@@ -26,13 +27,13 @@ export default function AdvisorQueue() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-medium">
-              <tr>
-                <td className="p-3 font-bold text-slate-900">Rabi Elabor (#ST-88421)</td>
-                <td className="p-3">
+              <tr className={stackedRow}>
+                <td data-label="Student" className={`${stackedCell} sm:p-3 font-bold text-slate-900`}>Rabi Elabor (#ST-88421)</td>
+                <td data-label="Type" className={`${stackedCell} sm:p-3`}>
                   <span className="bg-canvas-sidebar text-white px-2 py-0.5 rounded font-bold">Proposal</span>
                 </td>
-                <td className="p-3 text-slate-700">Project 1: Microbes & Toxic Metal Survival</td>
-                <td className="p-3 text-right space-x-2">
+                <td data-label="Details" className={`${stackedCell} sm:p-3 text-slate-700`}>Project 1: Microbes & Toxic Metal Survival</td>
+                <td className={`${stackedCell} max-sm:justify-end max-sm:pt-2 sm:p-3 text-right space-x-2 whitespace-nowrap`}>
                   <AlertButton message="Proposal approved! Student unlocked Stage 3." className={approveButtonClass}>
                     Approve Proposal
                   </AlertButton>
@@ -44,13 +45,13 @@ export default function AdvisorQueue() {
                   </AlertButton>
                 </td>
               </tr>
-              <tr>
-                <td className="p-3 font-bold text-slate-900">Rabi Elabor (#ST-88421)</td>
-                <td className="p-3">
+              <tr className={stackedRow}>
+                <td data-label="Student" className={`${stackedCell} sm:p-3 font-bold text-slate-900`}>Rabi Elabor (#ST-88421)</td>
+                <td data-label="Type" className={`${stackedCell} sm:p-3`}>
                   <span className="bg-canvas-orange text-white px-2 py-0.5 rounded font-bold">Lab Log</span>
                 </td>
-                <td className="p-3 text-slate-700">3.0 Hours • Pond Field Site A (Sensor Calibration)</td>
-                <td className="p-3 text-right space-x-2">
+                <td data-label="Details" className={`${stackedCell} sm:p-3 text-slate-700`}>3.0 Hours • Pond Field Site A (Sensor Calibration)</td>
+                <td className={`${stackedCell} max-sm:justify-end max-sm:pt-2 sm:p-3 text-right space-x-2 whitespace-nowrap`}>
                   <AlertButton message="Lab Hours Approved!" className={approveButtonClass}>
                     Approve Hours
                   </AlertButton>

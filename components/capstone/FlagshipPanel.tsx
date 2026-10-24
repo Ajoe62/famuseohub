@@ -12,11 +12,11 @@ export default function FlagshipPanel() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
-          <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+          <div className="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-3">
             <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
               <Icon icon={faFileSignature} className="text-canvas-orange" /> Stage 2: Flagship Research Proposal
             </h3>
-            <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">
+            <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded whitespace-nowrap">
               Proposal Submitted
             </span>
           </div>
@@ -51,11 +51,11 @@ export default function FlagshipPanel() {
         </div>
 
         <div className="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
-          <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+          <div className="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-3">
             <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
               <Icon icon={faCloudArrowUp} className="text-canvas-sidebar" /> Stage 3 & 4: Completed Project & Deck
             </h3>
-            <span className="text-[10px] bg-slate-100 text-slate-500 font-bold px-2 py-0.5 rounded">
+            <span className="text-[10px] bg-slate-100 text-slate-500 font-bold px-2 py-0.5 rounded whitespace-nowrap">
               Final Milestone
             </span>
           </div>

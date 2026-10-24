@@ -3,6 +3,7 @@ import { faCirclePlus } from "@/lib/icons";
 import Icon from "../Icon";
 import AlertForm from "./AlertForm";
 import FormField, { fieldClass } from "./FormField";
+import { stackedCell, stackedHead, stackedRow } from "./stackedTable";
 
 const STATUS_BADGE = {
   Approved: "bg-emerald-100 text-emerald-800",
@@ -54,7 +55,7 @@ export default function LabHoursPanel() {
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 uppercase font-bold border-b border-canvas-border">
+            <thead className={`${stackedHead} bg-slate-50 text-slate-500 uppercase font-bold border-b border-canvas-border`}>
               <tr>
                 <th className="p-2.5">Date</th>
                 <th className="p-2.5">Location</th>
@@ -65,12 +66,12 @@ export default function LabHoursPanel() {
             </thead>
             <tbody className="divide-y divide-slate-100 font-medium">
               {LAB_LOG.map((entry) => (
-                <tr key={`${entry.date}-${entry.location}`}>
-                  <td className="p-2.5">{entry.date}</td>
-                  <td className="p-2.5">{entry.location}</td>
-                  <td className="p-2.5">{entry.activity}</td>
-                  <td className="p-2.5 font-bold text-slate-900">{entry.hours.toFixed(1)} hrs</td>
-                  <td className="p-2.5 text-right">
+                <tr key={`${entry.date}-${entry.location}`} className={stackedRow}>
+                  <td data-label="Date" className={`${stackedCell} sm:p-2.5`}>{entry.date}</td>
+                  <td data-label="Location" className={`${stackedCell} sm:p-2.5`}>{entry.location}</td>
+                  <td data-label="Activity" className={`${stackedCell} sm:p-2.5`}>{entry.activity}</td>
+                  <td data-label="Hours" className={`${stackedCell} sm:p-2.5 font-bold text-slate-900`}>{entry.hours.toFixed(1)} hrs</td>
+                  <td data-label="Status" className={`${stackedCell} sm:p-2.5 text-right`}>
                     <span className={`${STATUS_BADGE[entry.status]} px-2 py-0.5 rounded font-bold`}>
                       {entry.status}
                     </span>
