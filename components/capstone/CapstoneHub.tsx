@@ -7,9 +7,9 @@ import { useRole } from "../RoleProvider";
 // server-rendered and passed in as props.
 type Tab = { label: React.ReactNode; panel: React.ReactNode };
 
-const activeTabClass = "px-4 py-2 font-bold text-xs rounded-lg bg-canvas-sidebar text-white shadow-sm";
-const inactiveTabClass =
-  "px-4 py-2 font-bold text-xs rounded-lg bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border";
+const tabClass = "px-4 py-2 pointer-coarse:py-2.5 font-bold text-xs rounded-lg";
+const activeTabClass = `${tabClass} bg-canvas-sidebar text-white shadow-sm`;
+const inactiveTabClass = `${tabClass} bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border`;
 
 export default function CapstoneHub({ tabs, advisor }: { tabs: Tab[]; advisor: React.ReactNode }) {
   const [active, setActive] = useState(0);

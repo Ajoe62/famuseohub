@@ -67,12 +67,12 @@ export default function LabHoursPanel() {
             <tbody className="divide-y divide-slate-100 font-medium">
               {LAB_LOG.map((entry) => (
                 <tr key={`${entry.date}-${entry.location}`} className={stackedRow}>
-                  <td data-label="Date" className={`${stackedCell} sm:p-2.5`}>{entry.date}</td>
+                  <td data-label="Date" className={`${stackedCell} sm:p-2.5 sm:whitespace-nowrap`}>{entry.date}</td>
                   <td data-label="Location" className={`${stackedCell} sm:p-2.5`}>{entry.location}</td>
                   <td data-label="Activity" className={`${stackedCell} sm:p-2.5`}>{entry.activity}</td>
-                  <td data-label="Hours" className={`${stackedCell} sm:p-2.5 font-bold text-slate-900`}>{entry.hours.toFixed(1)} hrs</td>
+                  <td data-label="Hours" className={`${stackedCell} sm:p-2.5 sm:whitespace-nowrap font-bold text-slate-900`}>{entry.hours.toFixed(1)} hrs</td>
                   <td data-label="Status" className={`${stackedCell} sm:p-2.5 text-right`}>
-                    <span className={`${STATUS_BADGE[entry.status]} px-2 py-0.5 rounded font-bold`}>
+                    <span className={`${STATUS_BADGE[entry.status]} px-2 py-0.5 rounded font-bold whitespace-nowrap`}>
                       {entry.status}
                     </span>
                   </td>

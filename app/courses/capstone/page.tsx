@@ -17,7 +17,10 @@ export default function CapstonePage() {
 
       <div className="space-y-6">
         <nav className="text-xs text-slate-500 flex items-center space-x-2">
-          <Link href="/" className="hover:underline text-canvas-sidebar font-semibold">
+          <Link
+            href="/"
+            className="hover:underline text-canvas-sidebar font-semibold pointer-coarse:inline-block pointer-coarse:py-2.5 pointer-coarse:-my-2.5"
+          >
             Dashboard
           </Link>
           <span>/</span>

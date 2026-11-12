@@ -16,8 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GlobalNav />
 
           {/* MAIN CANVAS CONTENT AREA */}
-          <div className="flex-grow min-w-0 flex flex-col lg:flex-row overflow-x-hidden">
-            <main className="flex-grow min-w-0 p-4 sm:p-6 lg:p-8 space-y-6">{children}</main>
+          {/* The right sidebar only sits beside the content from xl up; below that it would squeeze it */}
+          <div className="flex-grow min-w-0 flex flex-col xl:flex-row overflow-x-hidden">
+            <main className="flex-grow min-w-0 w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">{children}</main>
 
             <RightSidebar />
           </div>

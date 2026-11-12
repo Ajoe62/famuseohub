@@ -24,7 +24,7 @@ const NAV_ITEMS = [
 const MOBILE_ITEMS = ["Courses", "Calendar", "Inbox"];
 
 const inactiveClass =
-  "flex flex-col items-center text-slate-300 hover:text-white transition-colors";
+  "flex flex-col items-center w-full py-1 text-slate-300 hover:text-white transition-colors";
 
 function Badge({ count, className }: { count: number; className: string }) {
   return (
@@ -61,7 +61,7 @@ export default function GlobalNav() {
               className={item.badge ? `${inactiveClass} relative` : inactiveClass}
             >
               <Icon icon={item.icon} className="text-xl mb-1" />
-              {item.badge && <Badge count={item.badge} className="top-0 right-3" />}
+              {item.badge && <Badge count={item.badge} className="top-0 left-1/2 ml-0.5" />}
               <span>{item.label}</span>
             </a>
           ))}
