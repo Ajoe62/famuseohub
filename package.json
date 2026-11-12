@@ -5,22 +5,44 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node scripts/vitest.mjs run",
+    "test:watch": "node scripts/vitest.mjs",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx db/setup.ts migrate",
+    "db:seed": "tsx db/setup.ts seed",
+    "db:setup": "tsx db/setup.ts setup"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.5.16",
     "@fortawesome/fontawesome-common-types": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "drizzle-orm": "^0.45.4",
+    "jose": "^6.2.17",
     "next": "^16.4.3",
+    "pg": "^8.23.1",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.5",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.6",
     "postcss": "^8.5.31",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
+    "tsx": "^4.23.15",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vitest": "^5.1.0"
   }
 }

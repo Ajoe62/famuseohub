@@ -1,4 +1,4 @@
-import { CURRICULUM_LINKS } from "@/lib/data";
+import { CURRICULUM_LINKS } from "@/lib/curriculum";
 import { faArrowUpRightFromSquare, faFileWord, faFlask } from "@/lib/icons";
 import Icon from "../Icon";
 

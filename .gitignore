@@ -4,3 +4,7 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 .env*.local
+.data/
+test-results/
+playwright-report/
+.env

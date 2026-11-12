@@ -1,27 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { useRole } from "../RoleProvider";
 
-// Only the tab/role switching runs on the client; the panels themselves are
-// server-rendered and passed in as props.
-type Tab = { label: React.ReactNode; panel: React.ReactNode };
+// Only tab switching runs on the client; panels are server-rendered and passed in.
+type Tab = { key: string; label: React.ReactNode; panel: React.ReactNode };
 
 const tabClass = "px-4 py-2 pointer-coarse:py-2.5 font-bold text-xs rounded-lg";
 const activeTabClass = `${tabClass} bg-canvas-sidebar text-white shadow-sm`;
 const inactiveTabClass = `${tabClass} bg-white text-slate-600 hover:bg-slate-100 border border-canvas-border`;
 
-export default function CapstoneHub({ tabs, advisor }: { tabs: Tab[]; advisor: React.ReactNode }) {
-  const [active, setActive] = useState(0);
-  const { isAdvisorView } = useRole();
+export default function CapstoneHub({ tabs, initial }: { tabs: Tab[]; initial?: string }) {
+  const [active, setActive] = useState(() => Math.max(0, tabs.findIndex((t) => t.key === initial)));
+  const id = "hub";
 
   return (
     <>
-      {/* Navigation Tabs (Tracks + 50-Hour Lab Tracker) */}
-      <div className="flex flex-wrap gap-2 border-b border-canvas-border pb-2">
+      <div role="tablist" aria-label="Capstone sections" className="flex flex-wrap gap-2 border-b border-canvas-border pb-2">
         {tabs.map((t, i) => (
           <button
-            key={i}
+            key={t.key}
+            role="tab"
+            id={`${id}-tab-${i}`}
+            aria-selected={active === i}
+            aria-controls={`${id}-panel-${i}`}
             onClick={() => setActive(i)}
             className={active === i ? activeTabClass : inactiveTabClass}
           >
@@ -30,16 +31,12 @@ export default function CapstoneHub({ tabs, advisor }: { tabs: Tab[]; advisor: R
         ))}
       </div>
 
-      {/* Panels stay mounted (hidden via CSS) so in-progress form input survives tab/role switches */}
-      <div className={isAdvisorView ? "hidden" : "space-y-6"}>
-        {tabs.map((t, i) => (
-          <div key={i} className={active === i ? "" : "hidden"}>
-            {t.panel}
-          </div>
-        ))}
-      </div>
-
-      <div className={isAdvisorView ? "" : "hidden"}>{advisor}</div>
+      {/* Panels stay mounted (hidden via CSS) so in-progress form input survives tab switches */}
+      {tabs.map((t, i) => (
+        <div key={t.key} role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} hidden={active !== i} className="space-y-6">
+          {t.panel}
+        </div>
+      ))}
     </>
   );
 }
