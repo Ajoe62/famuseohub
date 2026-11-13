@@ -16,7 +16,8 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1, // Tests share one seeded database and run as a story.
   timeout: 60_000,
-  reporter: [["list"]],
+  // In CI, also write an HTML report (uploaded as an artifact when a test fails).
+  reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : [["list"]],
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: "retain-on-failure",
@@ -44,6 +45,7 @@ export default defineConfig({
       DATABASE_URL_UNPOOLED: "",
       PGLITE_DIR: ".data/e2e",
       ENABLE_DEV_LOGIN: "true",
+      CRON_SECRET: "e2e-cron-secret",
       SESSION_SECRET: "e2e-only-secret-not-for-production-0123456789",
       APP_URL: `http://localhost:${PORT}`,
       FRAME_ANCESTORS: `'self' ${PLATFORM.origin}`,

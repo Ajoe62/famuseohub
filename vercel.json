@@ -1,5 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["iad1"],
-  "buildCommand": "node scripts/migrate.mjs && next build"
+  "regions": [
+    "iad1"
+  ],
+  "buildCommand": "node scripts/migrate.mjs && next build",
+  "crons": [
+    {
+      "path": "/api/cron/cleanup",
+      "schedule": "0 9 * * *"
+    }
+  ]
 }

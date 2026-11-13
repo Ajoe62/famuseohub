@@ -70,7 +70,8 @@ export type LaunchErrorCode =
   | "unsupported_message"
   | "missing_context"
   | "role_not_allowed"
-  | "platform_error";
+  | "platform_error"
+  | "rate_limited";
 
 export const LAUNCH_ERROR_MESSAGES: Record<LaunchErrorCode, string> = {
   unknown_platform: "This Canvas instance isn't registered with the Capstone Hub. Contact your Canvas administrator.",
@@ -81,6 +82,7 @@ export const LAUNCH_ERROR_MESSAGES: Record<LaunchErrorCode, string> = {
   missing_context: "Open the Capstone Hub from inside a course.",
   role_not_allowed: "The Capstone Hub is available to students and instructors of this course only.",
   platform_error: "Canvas reported a problem starting the launch. Go back to Canvas and try again.",
+  rate_limited: "Too many launch attempts from your network. Wait a minute, then open the Capstone Hub from Canvas again.",
 };
 
 export class LaunchError extends Error {

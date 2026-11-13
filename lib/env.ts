@@ -30,5 +30,8 @@ export function productionConfigWarnings(env: Env = process.env): string[] {
   if (env.ENABLE_DEV_LOGIN === "true") {
     warnings.push("ENABLE_DEV_LOGIN=true: anyone can sign in as any user. Use only for demos with fictional data.");
   }
+  if (env.VERCEL && !env.CRON_SECRET) {
+    warnings.push("CRON_SECRET is not set: the daily cleanup job (/api/cron/cleanup) is disabled.");
+  }
   return warnings;
 }

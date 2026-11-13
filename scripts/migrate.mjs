@@ -13,6 +13,14 @@ try {
   // no .env.local (normal in production)
 }
 
+// Vercel preview builds (pull requests, non-production branches) must not change the shared
+// database: an unmerged schema change would hit staging before review. Opt in only when previews
+// have their own database, e.g. a Neon branch per preview via the Neon–Vercel integration.
+if (process.env.VERCEL_ENV === "preview" && process.env.ALLOW_PREVIEW_MIGRATIONS !== "true") {
+  console.log("↷ skipping migrations on a preview build (set ALLOW_PREVIEW_MIGRATIONS=true if previews have their own database)");
+  process.exit(0);
+}
+
 const url = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
 if (!url) {
   console.error("DATABASE_URL (or DATABASE_URL_UNPOOLED) is required.");
