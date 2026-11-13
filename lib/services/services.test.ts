@@ -1,10 +1,10 @@
 // Integration tests: real services against a fresh in-memory Postgres (PGlite) per test.
 import { beforeEach, describe, expect, it } from "vitest";
 import { and, eq } from "drizzle-orm";
-import { createDb, type DB } from "@/db";
-import { runMigrations } from "@/db/migrate";
+import type { DB } from "@/db";
+import { createTestDb } from "@/db/testing";
 import { courses, labLogs, memberships, milestones, notifications, reviews, users } from "@/db/schema";
-import { getQueue, reviewLabLog, reviewSubmission, verifiedHoursReport, visibleStudents } from "./advisor";
+import { assignAdvisor, getQueue, reviewLabLog, reviewSubmission, verifiedHoursReport, visibleStudents } from "./advisor";
 import { ServiceError, type Actor } from "./errors";
 import { chooseTrack, getStudentOverview, logLabHours, submitStage } from "./student";
 
@@ -21,8 +21,7 @@ async function member(courseId: string, name: string, role: "student" | "advisor
 }
 
 beforeEach(async () => {
-  db = createDb({ dataDir: "memory://" });
-  await runMigrations(db, false);
+  db = await createTestDb();
   const [c1, c2] = await db
     .insert(courses)
     .values([
@@ -159,6 +158,29 @@ describe("advisor access control", () => {
   it("shows unassigned students to every advisor in the course", async () => {
     await member(advisor.courseId, "Unassigned", "student");
     expect((await visibleStudents(db, otherAdvisor)).map((s) => s.name)).toEqual(["Unassigned"]);
+  });
+
+  it("lets an advisor claim an unassigned student, and hand them to a colleague", async () => {
+    const newbie = await member(advisor.courseId, "Unassigned", "student");
+    await assignAdvisor(db, otherAdvisor, newbie.membershipId, otherAdvisor.membershipId);
+    expect((await visibleStudents(db, otherAdvisor)).map((s) => s.name)).toEqual(["Unassigned"]);
+    expect((await visibleStudents(db, advisor)).map((s) => s.name)).toEqual(["Student"]); // no longer unassigned
+
+    await assignAdvisor(db, otherAdvisor, newbie.membershipId, advisor.membershipId);
+    const notes = await db.select().from(notifications).where(eq(notifications.membershipId, advisor.membershipId));
+    expect(notes.map((n) => n.message)).toContain("Unassigned was assigned to you as an advisee.");
+    const studentNotes = await db.select().from(notifications).where(eq(notifications.membershipId, newbie.membershipId));
+    expect(studentNotes.map((n) => n.message)).toContain("Advisor One is now your capstone advisor.");
+  });
+
+  it("can unassign, but can't touch others' students or assign across courses", async () => {
+    await assignAdvisor(db, advisor, student.membershipId, null);
+    expect((await visibleStudents(db, otherAdvisor)).map((s) => s.name)).toEqual(["Student"]);
+
+    await assignAdvisor(db, advisor, student.membershipId, advisor.membershipId);
+    await expect(assignAdvisor(db, otherAdvisor, student.membershipId, otherAdvisor.membershipId)).rejects.toThrow(/don't have access/);
+    await expect(assignAdvisor(db, advisor, student.membershipId, otherCourseAdvisor.membershipId)).rejects.toThrow(/isn't in this course/);
+    await expect(assignAdvisor(db, advisor, student.membershipId, student.membershipId)).rejects.toThrow(/isn't in this course/);
   });
 
   it("forbids reviewing a student you can't see", async () => {

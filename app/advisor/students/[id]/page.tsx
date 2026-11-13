@@ -25,7 +25,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       <Header title={overview.user.name} />
-      <nav className="text-xs text-slate-500 flex items-center gap-2">
+      <nav className="text-xs text-slate-600 flex items-center gap-2">
         <Link href="/advisor" className="hover:underline text-canvas-sidebar font-semibold pointer-coarse:py-2.5">
           Approval Queue
         </Link>
@@ -45,7 +45,7 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
           </div>
         </>
       ) : (
-        <p className="text-xs text-slate-500">This student hasn&apos;t chosen a capstone track yet.</p>
+        <p className="text-xs text-slate-600">This student hasn&apos;t chosen a capstone track yet.</p>
       )}
 
       <section className="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">

@@ -3,10 +3,11 @@ import { FIELD_LABELS, formatDateTime } from "@/lib/format";
 
 export function SubmissionView({ submission }: { submission: Submission }) {
   return (
-    <dl className="space-y-2 text-xs">
+    <div className="space-y-2 text-xs">
+      <dl className="space-y-2">
       {Object.entries(submission.data).map(([key, value]) => (
         <div key={key}>
-          <dt className="font-bold text-slate-500 uppercase text-[10px] tracking-wider">{FIELD_LABELS[key] ?? key}</dt>
+          <dt className="font-bold text-slate-600 uppercase text-[10px] tracking-wider">{FIELD_LABELS[key] ?? key}</dt>
           <dd className="text-slate-800 whitespace-pre-wrap break-words">
             {/^https?:\/\//.test(value) ? (
               <a href={value} target="_blank" rel="noopener noreferrer" className="text-canvas-sidebar font-semibold underline">
@@ -18,8 +19,9 @@ export function SubmissionView({ submission }: { submission: Submission }) {
           </dd>
         </div>
       ))}
-      <p className="text-[11px] text-slate-500">Submitted {formatDateTime(submission.createdAt)}</p>
-    </dl>
+      </dl>
+      <p className="text-[11px] text-slate-600">Submitted {formatDateTime(submission.createdAt)}</p>
+    </div>
   );
 }
 

@@ -14,12 +14,18 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx db/setup.ts migrate",
     "db:seed": "tsx db/setup.ts seed",
-    "db:setup": "tsx db/setup.ts setup"
+    "db:setup": "tsx db/setup.ts setup",
+    "lti:register": "tsx db/lti-register.ts",
+    "lti:keys": "tsx scripts/lti-keys.ts",
+    "db:migrate:prod": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.16",
     "@fortawesome/fontawesome-common-types": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "@neon/config": "^1.14.0",
+    "@neon/env": "^2.1.3",
+    "@vercel/functions": "^3.11.2",
     "drizzle-orm": "^0.45.4",
     "jose": "^6.2.17",
     "next": "^16.4.3",
@@ -29,6 +35,8 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@electric-sql/pglite-socket": "^0.2.19",
     "@playwright/test": "^1.65.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.5",

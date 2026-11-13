@@ -17,7 +17,7 @@ export default function LabHoursSummary({ hours }: { hours: HoursSummary }) {
           <h2 id="lab-progress-heading" className="font-bold text-slate-900 text-sm">
             {hours.required}-Hour Laboratory & Field Log Progress
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-600">
             {hours.complete
               ? "Requirement complete. All required hours are verified."
               : `${formatHours(hours.remaining)} of verified lab work remaining.`}
@@ -44,7 +44,7 @@ export default function LabHoursSummary({ hours }: { hours: HoursSummary }) {
           <div className="absolute inset-y-0 left-0 bg-canvas-orange rounded-full" style={{ width: `${hours.percent}%` }} />
         </div>
         {hours.pending > 0 && (
-          <p className="text-[11px] text-slate-500">+ {formatHours(hours.pending)} pending advisor verification</p>
+          <p className="text-[11px] text-slate-600">+ {formatHours(hours.pending)} pending advisor verification</p>
         )}
       </div>
     </section>

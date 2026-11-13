@@ -30,12 +30,17 @@ export default async function NotificationsPage() {
 
       <section className="bg-white rounded-xl shadow-sm border border-canvas-border">
         {items.length === 0 ? (
-          <p className="p-6 text-xs text-slate-500">You&apos;re all caught up.</p>
+          <p className="p-6 text-xs text-slate-600">You&apos;re all caught up.</p>
         ) : (
           <ul className="divide-y divide-slate-100">
             {items.map((n) => (
               <li key={n.id} className={`p-4 flex gap-3 items-start ${n.readAt ? "" : "bg-orange-50/60"}`}>
-                {!n.readAt && <span className="mt-1.5 w-2 h-2 rounded-full bg-canvas-orange flex-shrink-0" aria-label="Unread" />}
+                {!n.readAt && (
+                  <>
+                    <span className="mt-1.5 w-2 h-2 rounded-full bg-canvas-orange flex-shrink-0" aria-hidden />
+                    <span className="sr-only">Unread:</span>
+                  </>
+                )}
                 <div className="min-w-0 text-xs">
                   {n.href ? (
                     <Link href={n.href} className="font-semibold text-slate-900 hover:underline">
@@ -44,7 +49,7 @@ export default async function NotificationsPage() {
                   ) : (
                     <p className="font-semibold text-slate-900">{n.message}</p>
                   )}
-                  <p className="text-slate-500 mt-0.5">{formatDateTime(n.createdAt)}</p>
+                  <p className="text-slate-600 mt-0.5">{formatDateTime(n.createdAt)}</p>
                 </div>
               </li>
             ))}

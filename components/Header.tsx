@@ -25,7 +25,7 @@ export default async function Header({ title }: { title: string }) {
       <div className="min-w-0">
         <h1 className="text-xl sm:text-2xl font-bold text-slate-900">{title}</h1>
         {course && (
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-600">
             {course.title} • {course.term}
             {course.deadline && <> • Capstone deadline: {formatDate(course.deadline)}</>}
           </p>
@@ -41,8 +41,9 @@ export default async function Header({ title }: { title: string }) {
             <Icon icon={faInbox} />
             <span>Notifications</span>
             {unread > 0 && (
-              <span className="bg-canvas-orange text-white text-[10px] px-1.5 rounded-full font-bold" aria-label={`${unread} unread`}>
+              <span className="bg-canvas-orange text-white text-[10px] px-1.5 rounded-full font-bold">
                 {unread}
+                <span className="sr-only"> unread</span>
               </span>
             )}
           </Link>

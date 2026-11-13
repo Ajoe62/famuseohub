@@ -161,6 +161,64 @@ export const notifications = pgTable(
   (t) => [index("notifications_membership_idx").on(t.membershipId)],
 );
 
+// ---------------------------------------------------------------------------
+// LTI 1.3
+// ---------------------------------------------------------------------------
+
+/** A registered LMS (e.g. FAMU Canvas production, beta, or test) and its OIDC endpoints. */
+export const ltiPlatforms = pgTable(
+  "lti_platforms",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    issuer: text("issuer").notNull(),
+    clientId: text("client_id").notNull(),
+    authUrl: text("auth_url").notNull(),
+    tokenUrl: text("token_url").notNull(),
+    jwksUrl: text("jwks_url").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [unique("lti_platforms_issuer_client").on(t.issuer, t.clientId)],
+);
+
+/** Deployments (tool installations) we accept launches from. Unknown deployments are rejected. */
+export const ltiDeployments = pgTable(
+  "lti_deployments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    platformId: uuid("platform_id")
+      .notNull()
+      .references(() => ltiPlatforms.id, { onDelete: "cascade" }),
+    deploymentId: text("deployment_id").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [unique("lti_deployments_platform_deployment").on(t.platformId, t.deploymentId)],
+);
+
+/** OIDC login state + nonce. Single use: deleted when the launch consumes it. */
+export const ltiStates = pgTable("lti_states", {
+  state: text("state").primaryKey(),
+  nonce: text("nonce").notNull(),
+  platformId: uuid("platform_id")
+    .notNull()
+    .references(() => ltiPlatforms.id, { onDelete: "cascade" }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+});
+
+/**
+ * Single-use, short-lived ticket that lets a launch continue in a new tab when the
+ * browser blocks cookies inside the Canvas iframe (e.g. Safari). Stored as a SHA-256 hash.
+ */
+export const launchTickets = pgTable("launch_tickets", {
+  tokenHash: text("token_hash").primaryKey(),
+  membershipId: uuid("membership_id")
+    .notNull()
+    .references(() => memberships.id, { onDelete: "cascade" }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+});
+
+export type LtiPlatform = typeof ltiPlatforms.$inferSelect;
+
 export type User = typeof users.$inferSelect;
 export type Course = typeof courses.$inferSelect;
 export type Membership = typeof memberships.$inferSelect;

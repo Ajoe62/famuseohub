@@ -40,7 +40,7 @@ export default async function DevLoginPage() {
                 <button className="w-full text-left p-4 hover:bg-slate-50 flex justify-between items-center gap-2">
                   <span>
                     <span className="block font-bold text-sm text-slate-900">{r.name}</span>
-                    <span className="block text-xs text-slate-500">{r.course}</span>
+                    <span className="block text-xs text-slate-600">{r.course}</span>
                   </span>
                   <span
                     className={`text-[10px] font-bold px-2 py-0.5 rounded ${
