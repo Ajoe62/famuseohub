@@ -24,11 +24,11 @@ export default async function LtiLandingPage({ searchParams }: { searchParams: P
         href={`/api/lti/ticket?t=${encodeURIComponent(t)}`}
         target="_blank"
         rel="noopener"
-        className="inline-block px-4 py-2 pointer-coarse:py-3 bg-canvas-orange hover:bg-orange-600 text-white text-xs font-bold rounded-lg"
+        className="inline-block px-4 py-2 pointer-coarse:py-3 bg-canvas-orange hover:bg-canvas-orange-hover text-white text-xs font-bold rounded-lg"
       >
         Open Capstone Hub in a new tab
       </a>
-      <p className="text-xs text-slate-500">If the link has expired, go back to Canvas and click Capstone Hub again.</p>
+      <p className="text-xs text-slate-600">If the link has expired, go back to Canvas and click Capstone Hub again.</p>
     </div>
   );
 }

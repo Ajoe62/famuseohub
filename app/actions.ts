@@ -8,7 +8,7 @@ import { memberships } from "@/db/schema";
 import { createSession, destroySession, devLoginEnabled, requireActor } from "@/lib/auth/session";
 import { STAGES, type Stage, type Track } from "@/lib/curriculum";
 import { formToObject, validationFailure, type ActionResult } from "@/lib/capstone/validation";
-import { reviewLabLog, reviewSubmission } from "@/lib/services/advisor";
+import { assignAdvisor, reviewLabLog, reviewSubmission } from "@/lib/services/advisor";
 import { ServiceError } from "@/lib/services/errors";
 import { markAllRead } from "@/lib/services/notifications";
 import { chooseTrack, logLabHours, submitStage } from "@/lib/services/student";
@@ -66,6 +66,13 @@ export async function reviewLabLogAction(_prev: ActionResult | null, formData: F
   return run(approved ? "Lab hours verified." : "Entry returned to the student.", () =>
     reviewLabLog(db, actor, id, formToObject(formData)),
   );
+}
+
+export async function assignAdvisorAction(_prev: ActionResult | null, formData: FormData) {
+  const actor = await requireActor("advisor");
+  const studentId = String(formData.get("studentId") ?? "");
+  const to = String(formData.get("advisorId") ?? "");
+  return run(to ? "Advisor assigned." : "Student unassigned.", () => assignAdvisor(db, actor, studentId, to || null));
 }
 
 export async function markNotificationsReadAction() {

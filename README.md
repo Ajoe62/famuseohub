@@ -6,7 +6,7 @@ A tool for the FAMU School of the Environment capstone program, built to be embe
 - **Faculty advisors** approve each stage or request a revision. Approving a stage unlocks the next one. Advisors also verify or return each lab-hour entry, and can export verified hours as CSV.
 - Every decision is recorded with who made it and when (`reviews` table). Both sides get in-app notifications.
 
-> **Status:** the workflow, database, sessions and tests are complete. **The Canvas LTI launch is not built yet.** Until it is, use the development login at `/dev/login`. See [Roadmap](#roadmap).
+> **Status:** the workflow, the Canvas LTI 1.3 launch, advisor assignment, and automated accessibility checks are built and tested against a simulated Canvas. **Next step: install it in FAMU's beta Canvas** ([docs/CANVAS_SETUP.md](docs/CANVAS_SETUP.md)). For local development, use the development login at `/dev/login`.
 
 ## Quick start
 
@@ -42,14 +42,18 @@ Use **Switch user (dev)** in the header to change users.
 | `npm run db:migrate` | Applies pending migrations only (use this in production) |
 | `npm run db:seed` | Inserts sample data |
 | `npm run db:generate` | After editing `db/schema.ts`, creates a new SQL migration in `drizzle/` |
+| `npm run db:migrate:prod` | Production migration runner (plain Node, needs only `DATABASE_URL`) |
+| `npm run lti:register` | Registers a Canvas instance + deployment ID (see [docs/CANVAS_SETUP.md](docs/CANVAS_SETUP.md)) |
+| `npm run lti:keys` | Generates the production `LTI_PRIVATE_KEY` |
 
 ## Checks
 
 ```bash
 npm run lint        # ESLint (next/core-web-vitals + TypeScript)
 npm run typecheck   # tsc (TypeScript 7)
-npm test            # Vitest: business rules, validation, services against in-memory Postgres
-npm run test:e2e    # Playwright: full student/advisor story against a production build
+npm test            # Vitest: rules, validation, services, LTI verification, production DB driver
+npm run test:e2e    # Playwright against a production build: workflow, LTI launches from a
+                    # simulated cross-site Canvas, and WCAG 2.1 AA checks (axe-core) on every page
 ```
 
 - If `npx playwright install chromium` is blocked on your network, use an installed browser: `PW_CHANNEL=chrome npm run test:e2e` (or `msedge`).
@@ -78,21 +82,40 @@ docs/                Original static HTML prototype
 ```
 
 **Rules enforced on the server:**
+- Advisors can assign any student they can see (theirs or unassigned) to any advisor in the same course, or unassign them. Both people are notified.
 - Stage N can be submitted only after stage N−1 is approved, and only while the stage is open or in revision. Writes use conditional updates, so double-submits and simultaneous reviews can't corrupt state.
 - Only **approved** hours count toward the requirement. Entries must be 0.5–10 hours in 0.5 steps, and can't be in the future (Eastern time).
 - Links must be `http(s)`. Spreadsheet formulas are neutralised in CSV exports.
 - Advisors see students assigned to them, plus unassigned students in their course. Nothing from other courses.
 - A student can change track only before submitting Stage 1.
 
-**Embedding in Canvas.** Every response sends `Content-Security-Policy: frame-ancestors 'self' https://*.instructure.com`. In production, the session cookie is `Secure; SameSite=None; Partitioned`, so it works inside Canvas's cross-site iframe.
+**Canvas LTI 1.3** ([lib/lti/](lib/lti/), [app/api/lti/](app/api/lti/)):
+
+| Endpoint | Purpose |
+|---|---|
+| `/api/lti/login` | OIDC login initiation: stores a single-use state + nonce, redirects to Canvas |
+| `/api/lti/launch` | Verifies Canvas's signed `id_token` (JWKS signature, issuer, audience/azp, expiry, nonce, registered deployment), then creates or updates the user, course and role and starts a session |
+| `/lti/landing`, `/api/lti/ticket` | If the browser blocks cookies in the iframe, continue in a new tab with a single-use, 2-minute ticket |
+| `/api/lti/jwks` | The tool's public key |
+| `/api/lti/config` | Canvas Developer Key JSON configuration |
+| `/api/health` | Health check for the host |
+
+Canvas roles map to app roles on every launch: Teacher/TA/Designer → advisor, Student → student, everyone else is refused. Emails are never stored. Every response sends `Content-Security-Policy: frame-ancestors` limited to Canvas. Over https, the session cookie is `Secure; SameSite=None; Partitioned`, so it works inside Canvas's cross-site iframe.
+
+**Testing with Canvas from your machine.** Expose `npm run dev` through an https tunnel (e.g. `cloudflared tunnel --url http://localhost:3000`), set `APP_URL` to the tunnel URL, then register the platform with `npm run lti:register`.
 
 ## Deploying
 
-Required environment: `DATABASE_URL` and `SESSION_SECRET`; see [.env.example](.env.example). Run `npm run db:migrate` on each deploy. Host in a **US region**, and confirm hosting with FAMU IT before storing real student data (FERPA).
+Required environment: `DATABASE_URL`, `APP_URL`, `SESSION_SECRET`, `LTI_PRIVATE_KEY`; see [.env.example](.env.example). A production server **refuses to start** if any is missing (`instrumentation.ts`). Host in a **US region**, and confirm hosting with FAMU IT before storing real student data (FERPA).
+
+- **Vercel + hosted Postgres:** [vercel.json](vercel.json) pins the US East region and runs migrations before each build. Point preview deployments at a separate database.
+- **Container (FAMU-managed hosting):** [Dockerfile](Dockerfile) builds an image that applies migrations on start. *Not yet test-built: Docker wasn't running on the development machine.*
+
+After deploying, follow [docs/CANVAS_SETUP.md](docs/CANVAS_SETUP.md).
 
 ## Roadmap
 
-1. **LTI 1.3 launch.** Add `/api/lti/login`, `/api/lti/launch` (verify the Canvas `id_token` against Canvas's JWKS, check nonce and state), and `/api/lti/jwks`. Then upsert `users`/`courses`/`memberships` from the claims and call `createSession()`. Map LTI roles: Instructor/TA → advisor, Learner → student. Test against saLTIre, then FAMU's beta Canvas.
-2. **LTI Advantage.** Roster sync (NRPS) and a gradebook column for verified hours (AGS).
-3. **Advisor assignment UI** (today it's set in the database), plus per-course settings for required hours and the deadline.
-4. **Accessibility audit** (WCAG 2.1 AA) before the pilot.
+1. **FAMU beta Canvas:** create the Developer Key, register it, and test with real Canvas accounts.
+2. **Manual accessibility pass:** screen reader (NVDA/VoiceOver) and keyboard-only. Automated checks catch only part of WCAG.
+3. **LTI Advantage:** roster sync (NRPS) and a gradebook column for verified hours (AGS).
+4. **Per-course settings UI** for required hours and the deadline, plus a policy decision on late submissions.

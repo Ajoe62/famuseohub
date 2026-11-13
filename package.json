@@ -16,7 +16,8 @@
     "db:seed": "tsx db/setup.ts seed",
     "db:setup": "tsx db/setup.ts setup",
     "lti:register": "tsx db/lti-register.ts",
-    "lti:keys": "tsx scripts/lti-keys.ts"
+    "lti:keys": "tsx scripts/lti-keys.ts",
+    "db:migrate:prod": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.16",
@@ -31,6 +32,8 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@electric-sql/pglite-socket": "^0.2.19",
     "@playwright/test": "^1.65.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.5",

@@ -3,7 +3,9 @@
 @theme {
   --color-canvas-sidebar: #12362b;
   --color-canvas-active: #1b4d3e;
-  --color-canvas-orange: #f26a36;
+  /* Brand orange darkened to meet WCAG AA (4.5:1) for text and for white text on it. Original: #f26a36 */
+  --color-canvas-orange: #c9410d;
+  --color-canvas-orange-hover: #ad380b;
   --color-canvas-bg: #f5f5f5;
   --color-canvas-cardbg: #ffffff;
   --color-canvas-border: #e1e6e8;

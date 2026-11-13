@@ -10,12 +10,12 @@ const STATUS_BADGE = {
 
 export default function LabLogTable({ logs }: { logs: StudentOverview["labLogs"] }) {
   if (logs.length === 0) {
-    return <p className="text-xs text-slate-500">No lab hours logged yet.</p>;
+    return <p className="text-xs text-slate-600">No lab hours logged yet.</p>;
   }
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-xs">
-        <thead className={`${stackedHead} bg-slate-50 text-slate-500 uppercase font-bold border-b border-canvas-border`}>
+        <thead className={`${stackedHead} bg-slate-50 text-slate-600 uppercase font-bold border-b border-canvas-border`}>
           <tr>
             <th scope="col" className="p-2.5">Date</th>
             <th scope="col" className="p-2.5">Location</th>

@@ -102,7 +102,7 @@ export default function StageCard({ row, track, editable }: { row: StageRow; tra
       </div>
 
       {row.status === "locked" && (
-        <p className="text-xs text-slate-500">Unlocks when Stage {row.stage - 1} is approved by your advisor.</p>
+        <p className="text-xs text-slate-600">Unlocks when Stage {row.stage - 1} is approved by your advisor.</p>
       )}
 
       {row.latestReview && <ReviewNote review={row.latestReview} />}
@@ -115,7 +115,7 @@ export default function StageCard({ row, track, editable }: { row: StageRow; tra
           <StageFields track={track} stage={row.stage} defaults={row.latestSubmission?.data ?? {}} />
           <SubmitButton
             pendingLabel="Submitting…"
-            className="w-full bg-canvas-orange hover:bg-orange-600 text-white font-bold py-2 pointer-coarse:py-3 rounded-lg text-xs transition-colors shadow-sm"
+            className="w-full bg-canvas-orange hover:bg-canvas-orange-hover text-white font-bold py-2 pointer-coarse:py-3 rounded-lg text-xs transition-colors shadow-sm"
           >
             {isRevision ? "Resubmit to Advisor" : "Submit to Advisor"}
           </SubmitButton>

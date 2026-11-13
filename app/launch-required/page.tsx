@@ -15,7 +15,7 @@ export default async function LaunchRequiredPage({ searchParams }: { searchParam
           </>
         )}
       </p>
-      {reason && <p className="text-xs text-slate-500">Error code: {reason}</p>}
+      {reason && <p className="text-xs text-slate-600">Error code: {reason}</p>}
     </div>
   );
 }

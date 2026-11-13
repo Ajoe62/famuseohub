@@ -11,7 +11,7 @@ export default function TrackChooser({ current }: { current: Track | null }) {
     <section className="bg-white rounded-xl p-6 shadow-sm border border-canvas-border space-y-4">
       <div>
         <h3 className="font-bold text-slate-900 text-sm">{current ? "Change your capstone track" : "Choose your capstone track"}</h3>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-600">
           {current
             ? "You can switch until you submit Stage 1. Switching resets your stages."
             : "Pick the track you're enrolled in. You can switch until you submit Stage 1."}

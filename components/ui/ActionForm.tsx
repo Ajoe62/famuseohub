@@ -63,7 +63,20 @@ export const fieldClass =
   "w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs pointer-coarse:text-base focus:outline-none focus:ring-2 focus:ring-canvas-sidebar aria-[invalid=true]:border-red-500";
 
 /** Label + control + server-side error message. The child control gets its id and ARIA wiring from here. */
-export function FormField({ label, name, hint, children }: { label: string; name: string; hint?: string; children: React.ReactElement }) {
+export function FormField({
+  label,
+  name,
+  hint,
+  hideLabel = false,
+  children,
+}: {
+  label: string;
+  name: string;
+  hint?: string;
+  /** Keep the label for screen readers only, when the context already makes it obvious. */
+  hideLabel?: boolean;
+  children: React.ReactElement;
+}) {
   const { id: formId, state } = useContext(FormContext);
   const id = `${formId}-${name}`;
   const error = state?.fieldErrors?.[name]?.[0];
@@ -75,12 +88,12 @@ export function FormField({ label, name, hint, children }: { label: string; name
 
   return (
     <div>
-      <label htmlFor={id} className="block text-xs font-bold text-slate-700 mb-1">
+      <label htmlFor={id} className={hideLabel ? "sr-only" : "block text-xs font-bold text-slate-700 mb-1"}>
         {label}
       </label>
       {control}
       {hint && (
-        <p id={`${id}-hint`} className="mt-1 text-[11px] text-slate-500">
+        <p id={`${id}-hint`} className="mt-1 text-[11px] text-slate-600">
           {hint}
         </p>
       )}

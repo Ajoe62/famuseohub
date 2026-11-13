@@ -30,7 +30,7 @@ const STATUS_STYLES: Record<MilestoneStatus, { card: string; badge: string; titl
     card: "bg-slate-50 border-slate-200",
     badge: "bg-slate-300 text-slate-700",
     title: "text-slate-600",
-    label: "text-slate-500",
+    label: "text-slate-600",
   },
 };
 
@@ -43,7 +43,7 @@ export default function MilestoneProgress({
 }) {
   return (
     <section aria-label={heading} className="bg-white rounded-xl p-5 shadow-sm border border-canvas-border">
-      <h3 className="text-xs font-bold uppercase text-slate-500 tracking-wider mb-4">{heading}</h3>
+      <h3 className="text-xs font-bold uppercase text-slate-600 tracking-wider mb-4">{heading}</h3>
       <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-center">
         {stages.map(({ stage, status }) => {
           const s = STATUS_STYLES[status];

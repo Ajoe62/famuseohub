@@ -27,7 +27,7 @@ export default function CurriculumLinks() {
           href={CURRICULUM_LINKS.bioremediationGuide}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-3 py-1.5 pointer-coarse:py-2.5 bg-canvas-orange hover:bg-orange-600 text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 shadow-sm"
+          className="px-3 py-1.5 pointer-coarse:py-2.5 bg-canvas-orange hover:bg-canvas-orange-hover text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 shadow-sm"
         >
           <Icon icon={faFlask} className="text-[10px]" /> Flagship Bioremediation Guide
         </a>

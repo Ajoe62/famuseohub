@@ -176,6 +176,47 @@ export async function reviewLabLog(db: DB, advisor: Actor, labLogId: string, raw
   return { ok: true as const };
 }
 
+/** Advisors in the actor's course, for the assignment dropdown. */
+export async function courseAdvisors(db: DB, advisor: Actor) {
+  requireRole(advisor, "advisor");
+  return db
+    .select({ membershipId: memberships.id, name: users.name })
+    .from(memberships)
+    .innerJoin(users, eq(users.id, memberships.userId))
+    .where(and(eq(memberships.courseId, advisor.courseId), eq(memberships.role, "advisor")))
+    .orderBy(asc(users.name));
+}
+
+/**
+ * Assign a visible student (yours or unassigned) to an advisor in the same course, or
+ * unassign them (`toAdvisorId` = null).
+ */
+export async function assignAdvisor(db: DB, advisor: Actor, studentMembershipId: string, toAdvisorId: string | null) {
+  await assertCanReview(db, advisor, studentMembershipId);
+  let targetName: string | null = null;
+  if (toAdvisorId) {
+    const target = (await courseAdvisors(db, advisor)).find((a) => a.membershipId === toAdvisorId);
+    if (!target) throw new ServiceError("That advisor isn't in this course.", "forbidden");
+    targetName = target.name;
+  }
+
+  await db.transaction(async (tx) => {
+    const [before] = await tx.select().from(memberships).where(eq(memberships.id, studentMembershipId));
+    if (before.advisorId === toAdvisorId) return;
+    await tx.update(memberships).set({ advisorId: toAdvisorId }).where(eq(memberships.id, studentMembershipId));
+    const [student] = await tx.select({ name: users.name }).from(users).where(eq(users.id, before.userId));
+    if (toAdvisorId && toAdvisorId !== advisor.membershipId) {
+      await notify(tx, [toAdvisorId], `${student?.name ?? "A student"} was assigned to you as an advisee.`, `/advisor/students/${studentMembershipId}`);
+    }
+    await notify(
+      tx,
+      [studentMembershipId],
+      targetName ? `${targetName} is now your capstone advisor.` : "Your capstone advisor assignment was removed.",
+      "/",
+    );
+  });
+}
+
 /** Approved lab hours for every visible student, for CSV export. */
 export async function verifiedHoursReport(db: DB, advisor: Actor) {
   const students = await visibleStudents(db, advisor);
