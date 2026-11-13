@@ -1,3 +1,11 @@
+import type { Instrumentation } from "next";
+
+/** Reports server errors (see lib/observability.ts for what is and isn't included). */
+export const onRequestError: Instrumentation.onRequestError = async (err, request, context) => {
+  const { reportRequestError } = await import("./lib/observability");
+  await reportRequestError(err, request, context);
+};
+
 // Runs once when a Next.js server instance starts.
 export async function register() {
   if (process.env.NEXT_RUNTIME !== "nodejs" || process.env.NODE_ENV !== "production") return;

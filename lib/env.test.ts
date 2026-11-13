@@ -32,4 +32,9 @@ describe("productionConfigProblems", () => {
     expect(productionConfigWarnings({ ENABLE_DEV_LOGIN: "true" })).toHaveLength(1);
     expect(productionConfigWarnings(good)).toEqual([]);
   });
+
+  it("warns on Vercel when the cleanup cron has no secret", () => {
+    expect(productionConfigWarnings({ ...good, VERCEL: "1" })).toHaveLength(1);
+    expect(productionConfigWarnings({ ...good, VERCEL: "1", CRON_SECRET: "s".repeat(32) })).toEqual([]);
+  });
 });

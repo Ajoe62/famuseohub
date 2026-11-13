@@ -90,3 +90,11 @@ test("tool configuration and public keys are served", async ({ request }) => {
   expect(jwks.keys[0]).not.toHaveProperty("d"); // never the private part
   expect((await request.get(`${APP}/api/health`)).status()).toBe(200);
 });
+
+test("the cleanup cron requires its secret", async ({ request }) => {
+  expect((await request.get(`${APP}/api/cron/cleanup`)).status()).toBe(401);
+  expect((await request.get(`${APP}/api/cron/cleanup`, { headers: { Authorization: "Bearer wrong" } })).status()).toBe(401);
+  const ok = await request.get(`${APP}/api/cron/cleanup`, { headers: { Authorization: "Bearer e2e-cron-secret" } });
+  expect(ok.status()).toBe(200);
+  expect(await ok.json()).toMatchObject({ ok: true, deleted: { ltiStates: expect.any(Number), rateLimits: expect.any(Number) } });
+});

@@ -6,6 +6,7 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   unique,
@@ -216,6 +217,21 @@ export const launchTickets = pgTable("launch_tickets", {
     .references(() => memberships.id, { onDelete: "cascade" }),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
 });
+
+/**
+ * Fixed-window request counters for rate limiting the public LTI endpoints. Kept in Postgres
+ * because serverless instances don't share memory. Old windows are deleted by the cleanup cron.
+ * The key holds a hash of the client IP, never the IP itself.
+ */
+export const rateLimits = pgTable(
+  "rate_limits",
+  {
+    key: text("key").notNull(),
+    windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
+    count: integer("count").notNull().default(1),
+  },
+  (t) => [primaryKey({ columns: [t.key, t.windowStart] }), index("rate_limits_window_idx").on(t.windowStart)],
+);
 
 export type LtiPlatform = typeof ltiPlatforms.$inferSelect;
 

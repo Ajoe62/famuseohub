@@ -2,10 +2,12 @@ import { db } from "@/db";
 import { appOrigin, setStateCookie } from "@/lib/auth/session";
 import { LaunchError } from "@/lib/lti/claims";
 import { startLogin, type LoginParams } from "@/lib/lti/launch";
-import { launchErrorRedirect } from "@/lib/lti/http";
+import { launchErrorRedirect, rateLimited } from "@/lib/lti/http";
 
 /** OIDC third-party-initiated login. Canvas may use GET or POST. */
 async function handle(request: Request, params: LoginParams) {
+  const limited = await rateLimited(db, request, "lti-login");
+  if (limited) return limited;
   try {
     const { redirectUrl, state } = await startLogin(db, params, `${appOrigin(request)}/api/lti/launch`);
     await setStateCookie(state);

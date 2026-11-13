@@ -2,10 +2,12 @@ import { db } from "@/db";
 import { appOrigin, createSession, takeStateCookie } from "@/lib/auth/session";
 import { LaunchError } from "@/lib/lti/claims";
 import { issueLaunchTicket, provisionFromLaunch, verifyLaunch } from "@/lib/lti/launch";
-import { launchErrorRedirect } from "@/lib/lti/http";
+import { launchErrorRedirect, rateLimited } from "@/lib/lti/http";
 
 /** Canvas POSTs the signed id_token here (response_mode=form_post). */
 export async function POST(request: Request) {
+  const limited = await rateLimited(db, request, "lti-launch");
+  if (limited) return limited;
   try {
     const form = await request.formData();
     if (form.get("error")) {

@@ -57,6 +57,7 @@ npm run test:e2e    # Playwright against a production build: workflow, LTI launc
                     # simulated cross-site Canvas, and WCAG 2.1 AA checks (axe-core) on every page
 ```
 
+- **CI:** [.github/workflows/ci.yml](.github/workflows/ci.yml) runs all of the above on every pull request and push to `master`, with no secrets (each job uses its own local database). Make the checks required in GitHub branch protection for `master`, because `master` deploys automatically.
 - If `npx playwright install chromium` is blocked on your network, use an installed browser: `PW_CHANNEL=chrome npm run test:e2e` (or `msedge`).
 - `npm test` uses a small launcher (`scripts/vitest.mjs`). On Windows, a `c:\` vs `C:\` drive-letter mismatch otherwise makes every test fail with "Vitest failed to find the runner".
 - TypeScript: `tsc` runs TypeScript 7 (`@typescript/native`), while the `typescript` package is aliased to the TS 6 API, because typescript-eslint doesn't support TS 7 yet. This is [Microsoft's documented side-by-side setup](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/).
@@ -109,10 +110,14 @@ Canvas roles map to app roles on every launch: Teacher/TA/Designer → advisor, 
 
 Required environment: `DATABASE_URL`, `APP_URL`, `SESSION_SECRET`, `LTI_PRIVATE_KEY`; see [.env.example](.env.example). A production server **refuses to start** if any is missing (`instrumentation.ts`). Host in a **US region**, and confirm hosting with FAMU IT before storing real student data (FERPA).
 
-- **Vercel + hosted Postgres:** [vercel.json](vercel.json) pins the US East region and runs migrations before each build. Point preview deployments at a separate database.
+- **Vercel + hosted Postgres:** [vercel.json](vercel.json) pins the US East region and runs migrations before each **production** build. Preview builds skip migrations, so a pull request can't change the shared database. Set `ALLOW_PREVIEW_MIGRATIONS=true` only once previews have their own database (for example, the Neon–Vercel integration's branch per preview).
+- **Operations:**
+  - The public LTI endpoints are rate-limited per client IP, using counters in Postgres. The limits are generous because a whole class can share campus Wi-Fi.
+  - A daily Vercel Cron job (`/api/cron/cleanup`, protected by `CRON_SECRET`) deletes expired login states, launch tickets and rate-limit rows.
+  - Server errors are logged as one JSON line each. Set `ERROR_WEBHOOK_URL` (Slack or Discord) for alerts.
 - **Container (FAMU-managed hosting):** [Dockerfile](Dockerfile) builds an image that applies migrations on start. *Not yet test-built: Docker wasn't running on the development machine.*
 
-After deploying, follow [docs/CANVAS_SETUP.md](docs/CANVAS_SETUP.md).
+After deploying, test with [docs/SALTIRE_TEST.md](docs/SALTIRE_TEST.md) (a free LTI test platform), then follow [docs/CANVAS_SETUP.md](docs/CANVAS_SETUP.md).
 
 ## Roadmap
 
