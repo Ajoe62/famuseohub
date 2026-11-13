@@ -14,7 +14,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx db/setup.ts migrate",
     "db:seed": "tsx db/setup.ts seed",
-    "db:setup": "tsx db/setup.ts setup"
+    "db:setup": "tsx db/setup.ts setup",
+    "lti:register": "tsx db/lti-register.ts",
+    "lti:keys": "tsx scripts/lti-keys.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.16",

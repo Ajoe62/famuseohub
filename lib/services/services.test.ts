@@ -1,8 +1,8 @@
 // Integration tests: real services against a fresh in-memory Postgres (PGlite) per test.
 import { beforeEach, describe, expect, it } from "vitest";
 import { and, eq } from "drizzle-orm";
-import { createDb, type DB } from "@/db";
-import { runMigrations } from "@/db/migrate";
+import type { DB } from "@/db";
+import { createTestDb } from "@/db/testing";
 import { courses, labLogs, memberships, milestones, notifications, reviews, users } from "@/db/schema";
 import { getQueue, reviewLabLog, reviewSubmission, verifiedHoursReport, visibleStudents } from "./advisor";
 import { ServiceError, type Actor } from "./errors";
@@ -21,8 +21,7 @@ async function member(courseId: string, name: string, role: "student" | "advisor
 }
 
 beforeEach(async () => {
-  db = createDb({ dataDir: "memory://" });
-  await runMigrations(db, false);
+  db = await createTestDb();
   const [c1, c2] = await db
     .insert(courses)
     .values([
