@@ -39,6 +39,9 @@ export default defineConfig({
     timeout: 300_000,
     reuseExistingServer: false,
     env: {
+      // Empty (not unset) so .env.local can't point the tests at a hosted database: they reset it.
+      DATABASE_URL: "",
+      DATABASE_URL_UNPOOLED: "",
       PGLITE_DIR: ".data/e2e",
       ENABLE_DEV_LOGIN: "true",
       SESSION_SECRET: "e2e-only-secret-not-for-production-0123456789",

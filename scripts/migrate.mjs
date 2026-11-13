@@ -1,14 +1,21 @@
 // Production migration runner: plain Node, runtime dependencies only (no tsx/drizzle-kit).
-// Usage: DATABASE_URL=postgres://... node scripts/migrate.mjs
+// Usage: DATABASE_URL=postgres://... node scripts/migrate.mjs  (also reads .env.local if present)
+// Uses DATABASE_URL_UNPOOLED when set: Neon's pooled (PgBouncer) connection can break migrations.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import pg from "pg";
 
-const url = process.env.DATABASE_URL;
+try {
+  process.loadEnvFile(".env.local"); // values already in the environment win
+} catch {
+  // no .env.local (normal in production)
+}
+
+const url = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
 if (!url) {
-  console.error("DATABASE_URL is required.");
+  console.error("DATABASE_URL (or DATABASE_URL_UNPOOLED) is required.");
   process.exit(1);
 }
 

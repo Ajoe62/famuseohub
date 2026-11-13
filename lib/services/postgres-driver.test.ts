@@ -20,9 +20,10 @@ let server: PGLiteSocketServer;
 let url: string;
 let db: DB;
 
+// DATABASE_URL_UNPOOLED is blanked so a developer's .env.local (e.g. Neon) is never used here.
 // Async on purpose: the database server runs in this process, so a sync child would deadlock.
 async function runMigrations() {
-  const { stdout } = await promisify(execFile)(process.execPath, ["scripts/migrate.mjs"], { env: { ...process.env, DATABASE_URL: url } });
+  const { stdout } = await promisify(execFile)(process.execPath, ["scripts/migrate.mjs"], { env: { ...process.env, DATABASE_URL: url, DATABASE_URL_UNPOOLED: "" } });
   return stdout;
 }
 

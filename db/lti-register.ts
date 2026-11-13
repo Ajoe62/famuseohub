@@ -9,7 +9,7 @@
  * With PGlite, stop `npm run dev` first.
  */
 import { and, eq } from "drizzle-orm";
-import { createDb } from "./index";
+import { createDb, loadLocalEnv } from "./index";
 import { ltiDeployments, ltiPlatforms } from "./schema";
 
 // Instructure-hosted Canvas. The issuer is shared by every institution on that environment;
@@ -52,6 +52,7 @@ async function main() {
   const deploymentIds = args["deployment-id"] ?? [];
   if (deploymentIds.length === 0) throw new Error("Pass at least one --deployment-id (shown in Canvas after installing the tool).");
 
+  loadLocalEnv(); // registers in the database .env.local points at (e.g. Neon), like the db:* scripts
   const db = createDb();
   const values = platform as Required<{ [K in keyof typeof platform]: string }>;
   const [row] = await db

@@ -4,13 +4,15 @@ import { PGlite } from "@electric-sql/pglite";
 import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
 import { drizzle as drizzlePg, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import { attachDatabasePool } from "@vercel/functions";
 import * as schema from "./schema";
 
 // Both drivers expose the same query API; we type everything against node-postgres.
 export type DB = NodePgDatabase<typeof schema>;
 
 /**
- * DATABASE_URL set   → real Postgres (production, or local Docker).
+ * DATABASE_URL set   → real Postgres (Neon or another host). On Neon this is the pooled
+ *                      (-pooler) URL; migrations use DATABASE_URL_UNPOOLED (see adminDatabaseUrl).
  * DATABASE_URL unset → embedded PGlite stored in PGLITE_DIR (default .data/pglite),
  *                      so local development needs no database server.
  *                      PGlite is single-process: stop `npm run dev` before running db scripts.
@@ -19,7 +21,10 @@ export type DB = NodePgDatabase<typeof schema>;
 export function createDb(options: { url?: string; dataDir?: string } = {}): DB {
   const url = options.url ?? process.env.DATABASE_URL;
   if (url) {
-    return drizzlePg(new Pool({ connectionString: url }), { schema });
+    const pool = new Pool({ connectionString: url });
+    // On Vercel Fluid compute, closes idle connections before the instance suspends. No-op elsewhere.
+    attachDatabasePool(pool);
+    return drizzlePg(pool, { schema });
   }
   const dataDir = options.dataDir ?? process.env.PGLITE_DIR ?? ".data/pglite";
   // Dev-only path; the ignore hint stops Turbopack from tracing the whole project into the build.
@@ -28,7 +33,24 @@ export function createDb(options: { url?: string; dataDir?: string } = {}): DB {
   return drizzlePglite(client, { schema }) as unknown as DB;
 }
 
-const globalForDb = globalThis as unknown as { __famuDb?: DB };
+/**
+ * URL for schema migrations and other admin work. Neon's pooled connection goes through PgBouncer
+ * in transaction mode, which can break migrations, so prefer the direct one when it's provided.
+ */
+export function adminDatabaseUrl(env: NodeJS.ProcessEnv = process.env): string | undefined {
+  return env.DATABASE_URL_UNPOOLED || env.DATABASE_URL || undefined;
+}
+
+/** Loads .env.local for CLI scripts (Next.js does this itself). Values already set in the environment win. */
+export function loadLocalEnv() {
+  try {
+    process.loadEnvFile(".env.local");
+  } catch {
+    // No .env.local: fine, e.g. in production where the host provides the environment.
+  }
+}
+
+const globalForDb =globalThis as unknown as { __famuDb?: DB };
 
 function getDb(): DB {
   // Cache on globalThis so dev hot-reloads reuse one connection / PGlite instance.

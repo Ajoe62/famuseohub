@@ -35,14 +35,15 @@ Use **Switch user (dev)** in the header to change users.
 - **Development:** with `DATABASE_URL` unset, the app uses [PGlite](https://pglite.dev), a real Postgres compiled to WebAssembly, stored in `.data/pglite`. There's nothing to install.
   PGlite allows **one process at a time**, so stop `npm run dev` before running `db:*` scripts.
 - **Production / Docker:** set `DATABASE_URL` to a Postgres connection string. The code is identical.
+- **Staging on Neon:** `neon env pull` writes `DATABASE_URL` (pooled, used by the app) and `DATABASE_URL_UNPOOLED` (direct, used for migrations) into `.env.local`. The `db:*` scripts read `.env.local` too. With it present, `npm run dev` also uses Neon; comment the two lines out to go back to the faster local database. `db:setup` refuses to erase a hosted database without `-- --force`, and the test suites always use their own local database.
 
 | Script | What it does |
 |---|---|
-| `npm run db:setup` | Wipes the local database, applies migrations, seeds sample data (refuses when `NODE_ENV=production`) |
+| `npm run db:setup` | Wipes the database, applies migrations, seeds sample data (refuses in production; a hosted database needs `-- --force`) |
 | `npm run db:migrate` | Applies pending migrations only (use this in production) |
 | `npm run db:seed` | Inserts sample data |
 | `npm run db:generate` | After editing `db/schema.ts`, creates a new SQL migration in `drizzle/` |
-| `npm run db:migrate:prod` | Production migration runner (plain Node, needs only `DATABASE_URL`) |
+| `npm run db:migrate:prod` | Production migration runner (plain Node; uses `DATABASE_URL_UNPOOLED`, else `DATABASE_URL`) |
 | `npm run lti:register` | Registers a Canvas instance + deployment ID (see [docs/CANVAS_SETUP.md](docs/CANVAS_SETUP.md)) |
 | `npm run lti:keys` | Generates the production `LTI_PRIVATE_KEY` |
 
